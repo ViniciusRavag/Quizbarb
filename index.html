@@ -23,16 +23,17 @@
         .container {
             max-width: 800px;
             margin: 0 auto;
-            padding: 2rem;
+            padding: 1rem;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: flex-start;
+            padding-top: 2rem;
         }
 
         .header {
             text-align: center;
-            margin-bottom: 3rem;
+            margin-bottom: 2rem;
             opacity: 0;
             transform: translateY(-30px);
             animation: fadeInUp 0.8s ease forwards;
@@ -57,11 +58,13 @@
             backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 24px;
-            padding: 3rem;
+            padding: 2rem;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
             opacity: 0;
             transform: translateY(30px);
             animation: fadeInUp 0.8s 0.3s ease forwards;
+            width: 100%;
+            max-width: none;
         }
 
         .step {
@@ -102,7 +105,7 @@
 
         .options-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            grid-template-columns: repeat(2, 1fr);
             gap: 1rem;
             margin-bottom: 2rem;
         }
@@ -111,12 +114,12 @@
             background: rgba(255, 255, 255, 0.05);
             border: 2px solid rgba(255, 255, 255, 0.15);
             border-radius: 16px;
-            padding: 1.5rem 1rem;
+            padding: 1.2rem 0.8rem;
             text-align: center;
             cursor: pointer;
             transition: all 0.3s ease;
             backdrop-filter: blur(10px);
-            min-height: 140px;
+            min-height: 120px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -138,7 +141,7 @@
         .option-icon {
             width: 60px;
             height: 60px;
-            background: linear-gradient(135deg, #d4af8c, #b8956f);
+            background: transparent;
             border-radius: 12px;
             display: flex;
             align-items: center;
@@ -356,11 +359,13 @@
 
         @media (max-width: 768px) {
             .container {
-                padding: 1rem;
+                padding: 0.5rem;
+                padding-top: 1rem;
             }
 
             .steps-container {
-                padding: 2rem;
+                padding: 1.5rem;
+                border-radius: 16px;
             }
 
             .logo {
@@ -369,16 +374,62 @@
 
             .options-grid {
                 grid-template-columns: repeat(2, 1fr);
+                gap: 0.8rem;
+            }
+
+            .option-card {
+                min-height: 110px;
+                padding: 1rem 0.6rem;
+            }
+
+            .option-icon {
+                width: 50px;
+                height: 50px;
+                margin-bottom: 0.6rem;
+            }
+
+            .option-label {
+                font-size: 0.85rem;
             }
 
             .haircut-card {
                 flex: 0 0 250px;
             }
+
+            .step-title {
+                font-size: 1.1rem;
+            }
+
+            .header {
+                margin-bottom: 1.5rem;
+            }
         }
 
         @media (max-width: 480px) {
+            .container {
+                padding: 0.25rem;
+            }
+            
+            .steps-container {
+                padding: 1rem;
+            }
+            
             .options-grid {
-                grid-template-columns: 1fr;
+                gap: 0.6rem;
+            }
+            
+            .option-card {
+                min-height: 100px;
+                padding: 0.8rem 0.4rem;
+            }
+            
+            .option-icon {
+                width: 45px;
+                height: 45px;
+            }
+            
+            .option-label {
+                font-size: 0.8rem;
             }
         }
     </style>
