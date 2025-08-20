@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Descubra Seu Estilo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: #f5f5f5;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            opacity: 0;
+            transform: translateY(-30px);
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 300;
+            color: #d4af8c;
+            margin-bottom: 0.5rem;
+            letter-spacing: 3px;
+        }
+
+        .tagline {
+            font-size: 0.9rem;
+            color: #a0a0a0;
+            font-weight: 300;
+        }
+
+        .steps-container {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 3rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.8s 0.3s ease forwards;
+        }
+
+        .step {
+            margin-bottom: 2.5rem;
+            opacity: 0;
+            transform: translateX(-20px);
+        }
+
+        .step.active {
+            animation: slideIn 0.6s ease forwards;
+        }
+
+        .step-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #d4af8c, #b8956f);
+            color: #1a1a1a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            margin-right: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .step-title {
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: #f5f5f5;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .option-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            border-radius: 16px;
+            padding: 1.5rem 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            min-height: 140px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .option-card:hover {
+            transform: translateY(-5px);
+            border-color: #d4af8c;
+            box-shadow: 0 15px 35px rgba(212, 175, 140, 0.2);
+        }
+
+        .option-card.selected {
+            border-color: #d4af8c;
+            background: rgba(212, 175, 140, 0.1);
+            box-shadow: 0 10px 30px rgba(212, 175, 140, 0.3);
+        }
+
+        .option-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #d4af8c, #b8956f);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.8rem;
+            font-size: 1.5rem;
+            color: #1a1a1a;
+        }
+
+        .option-label {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #f5f5f5;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #d4af8c, #b8956f);
+            color: #1a1a1a;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            font-family: 'Inter', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .btn-primary.enabled {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(212, 175, 140, 0.3);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #d4af8c;
+            border: 1px solid #d4af8c;
+            padding: 0.8rem 1.5rem;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-right: 1rem;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn-secondary:hover {
+            background: #d4af8c;
+            color: #1a1a1a;
+        }
+
+        .results {
+            margin-top: 2rem;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .results.show {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .result-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            color: #d4af8c;
+            text-align: center;
+        }
+
+        .carousel-container {
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .carousel-track {
+            display: flex;
+            transition: transform 0.5s ease;
+            gap: 1.5rem;
+        }
+
+        .haircut-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            flex: 0 0 280px;
+            transition: all 0.3s ease;
+        }
+
+        .haircut-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            border-color: #d4af8c;
+        }
+
+        .haircut-img {
+            width: 100%;
+            height: 160px;
+            background: linear-gradient(135deg, #d4af8c, #b8956f);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #1a1a1a;
+            font-weight: 600;
+            font-size: 2rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+        }
+
+        .haircut-name {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #f5f5f5;
+        }
+
+        .carousel-nav {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .carousel-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #f5f5f5;
+            padding: 0.8rem 1.2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .carousel-btn:hover {
+            background: rgba(212, 175, 140, 0.2);
+            border-color: #d4af8c;
+        }
+
+        .carousel-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .carousel-indicators {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .indicator.active {
+            background: #d4af8c;
+            transform: scale(1.2);
+        }
+
+        .progress-bar {
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #d4af8c, #b8956f);
+            width: 0%;
+            transition: width 0.6s ease;
+            border-radius: 2px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideIn {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .steps-container {
+                padding: 2rem;
+            }
+
+            .logo {
+                font-size: 1.8rem;
+            }
+
+            .options-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .haircut-card {
+                flex: 0 0 250px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">arik.</div>
+            <div class="tagline">Descubra seu estilo perfeito</div>
+        </div>
+
+        <div class="steps-container">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+
+            <!-- Etapa 1: Formato do Rosto -->
+            <div class="step active" id="step1">
+                <div class="step-header">
+                    <div class="step-number">1</div>
+                    <div class="step-title">Qual é o formato do seu rosto?</div>
+                </div>
+                <div class="options-grid">
+                    <div class="option-card" data-value="oval" onclick="selectOption('faceShape', 'oval', this)">
+                        <div class="option-icon">⭕</div>
+                        <div class="option-label">Oval</div>
+                    </div>
+                    <div class="option-card" data-value="redondo" onclick="selectOption('faceShape', 'redondo', this)">
+                        <div class="option-icon">⚪</div>
+                        <div class="option-label">Redondo</div>
+                    </div>
+                    <div class="option-card" data-value="quadrado" onclick="selectOption('faceShape', 'quadrado', this)">
+                        <div class="option-icon">⬜</div>
+                        <div class="option-label">Quadrado</div>
+                    </div>
+                    <div class="option-card" data-value="triangular" onclick="selectOption('faceShape', 'triangular', this)">
+                        <div class="option-icon">🔺</div>
+                        <div class="option-label">Triangular</div>
+                    </div>
+                    <div class="option-card" data-value="diamante" onclick="selectOption('faceShape', 'diamante', this)">
+                        <div class="option-icon">💎</div>
+                        <div class="option-label">Diamante</div>
+                    </div>
+                </div>
+                <button class="btn-primary" id="nextBtn1" onclick="nextStep(2)">Próximo</button>
+            </div>
+
+            <!-- Etapa 2: Estilo de Vida -->
+            <div class="step hidden" id="step2">
+                <div class="step-header">
+                    <div class="step-number">2</div>
+                    <div class="step-title">Qual é o seu estilo de vida?</div>
+                </div>
+                <div class="options-grid">
+                    <div class="option-card" data-value="executivo" onclick="selectOption('lifestyle', 'executivo', this)">
+                        <div class="option-icon">💼</div>
+                        <div class="option-label">Executivo</div>
+                    </div>
+                    <div class="option-card" data-value="casual" onclick="selectOption('lifestyle', 'casual', this)">
+                        <div class="option-icon">👕</div>
+                        <div class="option-label">Casual</div>
+                    </div>
+                    <div class="option-card" data-value="criativo" onclick="selectOption('lifestyle', 'criativo', this)">
+                        <div class="option-icon">🎨</div>
+                        <div class="option-label">Criativo</div>
+                    </div>
+                    <div class="option-card" data-value="esportivo" onclick="selectOption('lifestyle', 'esportivo', this)">
+                        <div class="option-icon">⚽</div>
+                        <div class="option-label">Esportivo</div>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 1rem;">
+                    <button class="btn-secondary" onclick="previousStep(1)">Voltar</button>
+                    <button class="btn-primary" id="nextBtn2" onclick="nextStep(3)" style="flex: 1;">Próximo</button>
+                </div>
+            </div>
+
+            <!-- Etapa 3: Tipo de Cabelo -->
+            <div class="step hidden" id="step3">
+                <div class="step-header">
+                    <div class="step-number">3</div>
+                    <div class="step-title">Como é o seu cabelo?</div>
+                </div>
+                <div class="options-grid">
+                    <div class="option-card" data-value="liso" onclick="selectOption('hairType', 'liso', this)">
+                        <div class="option-icon">📏</div>
+                        <div class="option-label">Liso</div>
+                    </div>
+                    <div class="option-card" data-value="ondulado" onclick="selectOption('hairType', 'ondulado', this)">
+                        <div class="option-icon">〰️</div>
+                        <div class="option-label">Ondulado</div>
+                    </div>
+                    <div class="option-card" data-value="cacheado" onclick="selectOption('hairType', 'cacheado', this)">
+                        <div class="option-icon">🌀</div>
+                        <div class="option-label">Cacheado</div>
+                    </div>
+                    <div class="option-card" data-value="crespo" onclick="selectOption('hairType', 'crespo', this)">
+                        <div class="option-icon">🔄</div>
+                        <div class="option-label">Crespo</div>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 1rem;">
+                    <button class="btn-secondary" onclick="previousStep(2)">Voltar</button>
+                    <button class="btn-primary" id="nextBtn3" onclick="showResults()" style="flex: 1;">Ver Resultados</button>
+                </div>
+            </div>
+
+            <!-- Resultados -->
+            <div class="results hidden" id="results">
+                <div class="result-title">Cortes Recomendados Para Você</div>
+                <div class="carousel-container">
+                    <div class="carousel-track" id="carouselTrack"></div>
+                </div>
+                
+                <div class="carousel-nav">
+                    <button class="carousel-btn" id="prevBtn" onclick="previousSlide()">← Anterior</button>
+                    <button class="carousel-btn" id="nextCarouselBtn" onclick="nextSlide()">Próximo →</button>
+                </div>
+                
+                <div class="carousel-indicators" id="indicators"></div>
+
+                <button class="btn-secondary" onclick="restart()" style="margin-top: 2rem; width: auto; display: block; margin-left: auto; margin-right: auto;">Refazer Teste</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const haircutDatabase = {
+            oval: {
+                executivo: ["Pompadour clássico", "Side part elegante", "Corte social moderno"],
+                casual: ["Undercut relaxado", "Franja lateral", "Corte texturizado"],
+                criativo: ["Man bun", "Top knot", "Corte assimétrico"],
+                esportivo: ["Buzz cut", "Crew cut", "Fade esportivo"]
+            },
+            redondo: {
+                executivo: ["Pompadour alto", "Corte lateral estruturado", "Fade alto"],
+                casual: ["Quiff moderno", "Franja para cima", "Corte desfiado"],
+                criativo: ["Mohawk sutil", "Corte texturizado alto", "Undercut criativo"],
+                esportivo: ["High fade", "Crop top", "Buzz cut lateral"]
+            },
+            quadrado: {
+                executivo: ["Pompadour suave", "Side part clássico", "Corte executivo"],
+                casual: ["Corte texturizado", "Franja bagunçada", "Undercut moderno"],
+                criativo: ["Corte assimétrico", "Fade artístico", "Top knot"],
+                esportivo: ["Military cut", "Fade baixo", "Crew cut"]
+            },
+            triangular: {
+                executivo: ["Corte volumoso no topo", "Pompadour médio", "Side part"],
+                casual: ["Franja frontal", "Corte em camadas", "Quiff casual"],
+                criativo: ["Man bun", "Corte desconectado", "Franja artística"],
+                esportivo: ["High top fade", "Corte curto volumoso", "Buzz cut superior"]
+            },
+            diamante: {
+                executivo: ["Corte médio clássico", "Side part suave", "Pompadour baixo"],
+                casual: ["Franja lateral longa", "Corte shag", "Undercut sutil"],
+                criativo: ["Corte em camadas", "Franja assimétrica", "Top knot"],
+                esportivo: ["Fade médio", "Corte esportivo", "Buzz cut estilizado"]
+            }
+        };
+
+        let currentStep = 1;
+        let userChoices = {};
+        let currentSlide = 0;
+        let totalSlides = 0;
+
+        function updateProgress() {
+            const progress = (currentStep - 1) * 33.33;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        function selectOption(category, value, element) {
+            // Remove seleção anterior
+            const siblings = element.parentElement.children;
+            for (let sibling of siblings) {
+                sibling.classList.remove('selected');
+            }
+            
+            // Adiciona seleção atual
+            element.classList.add('selected');
+            userChoices[category] = value;
+            
+            // Habilita botão de próximo
+            const nextBtn = document.getElementById('nextBtn' + currentStep);
+            if (nextBtn) {
+                nextBtn.classList.add('enabled');
+            }
+        }
+
+        function nextStep(step) {
+            // Ocultar etapa atual
+            document.getElementById('step' + currentStep).classList.add('hidden');
+            document.getElementById('step' + currentStep).classList.remove('active');
+
+            // Mostrar próxima etapa
+            currentStep = step;
+            const nextStepElement = document.getElementById('step' + step);
+            nextStepElement.classList.remove('hidden');
+            setTimeout(() => {
+                nextStepElement.classList.add('active');
+            }, 100);
+
+            updateProgress();
+        }
+
+        function previousStep(step) {
+            document.getElementById('step' + currentStep).classList.add('hidden');
+            document.getElementById('step' + currentStep).classList.remove('active');
+
+            currentStep = step;
+            const prevStepElement = document.getElementById('step' + step);
+            prevStepElement.classList.remove('hidden');
+            setTimeout(() => {
+                prevStepElement.classList.add('active');
+            }, 100);
+
+            updateProgress();
+        }
+
+        function showResults() {
+            // Ocultar última etapa
+            document.getElementById('step3').classList.add('hidden');
+            document.getElementById('step3').classList.remove('active');
+
+            // Atualizar progresso para 100%
+            document.getElementById('progressFill').style.width = '100%';
+
+            // Gerar recomendações
+            const recommendations = haircutDatabase[userChoices.faceShape][userChoices.lifestyle];
+            const carouselTrack = document.getElementById('carouselTrack');
+            
+            carouselTrack.innerHTML = recommendations.map(cut => `
+                <div class="haircut-card">
+                    <div class="haircut-img">
+                        ${cut.charAt(0)}
+                    </div>
+                    <div class="haircut-name">${cut}</div>
+                </div>
+            `).join('');
+
+            totalSlides = recommendations.length;
+            currentSlide = 0;
+
+            // Criar indicadores
+            const indicators = document.getElementById('indicators');
+            indicators.innerHTML = '';
+            for (let i = 0; i < totalSlides; i++) {
+                const indicator = document.createElement('div');
+                indicator.className = 'indicator' + (i === 0 ? ' active' : '');
+                indicator.onclick = () => goToSlide(i);
+                indicators.appendChild(indicator);
+            }
+
+            updateCarouselNav();
+
+            // Mostrar resultados
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.classList.remove('hidden');
+            setTimeout(() => {
+                resultsDiv.classList.add('show');
+            }, 300);
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides - 1) {
+                currentSlide++;
+                updateCarousel();
+            }
+        }
+
+        function previousSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                updateCarousel();
+            }
+        }
+
+        function goToSlide(index) {
+            currentSlide = index;
+            updateCarousel();
+        }
+
+        function updateCarousel() {
+            const track = document.getElementById('carouselTrack');
+            const offset = -(currentSlide * 296); // 280px width + 16px gap
+            track.style.transform = `translateX(${offset}px)`;
+
+            // Atualizar indicadores
+            const indicators = document.querySelectorAll('.indicator');
+            indicators.forEach((indicator, index) => {
+                indicator.classList.toggle('active', index === currentSlide);
+            });
+
+            updateCarouselNav();
+        }
+
+        function updateCarouselNav() {
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextCarouselBtn');
+            
+            prevBtn.disabled = currentSlide === 0;
+            nextBtn.disabled = currentSlide === totalSlides - 1;
+        }
+
+        function restart() {
+            location.reload();
+        }
+
+        // Inicializar
+        updateProgress();
+    </script>
+</body>
+</html>
